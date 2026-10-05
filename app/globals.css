@@ -1,0 +1,768 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-border: var(--border);
+  --color-ring: var(--accent);
+
+  --font-serif: var(--font-cormorant), 'Noto Serif', Georgia, serif;
+  --font-hand: var(--font-caveat), 'Segoe Print', cursive;
+  --font-sans: var(--font-serif);
+
+  --font-script-greek: 'Noto Serif', Georgia, serif;
+  --font-script-devanagari: 'Noto Serif Devanagari', serif;
+  --font-script-gurmukhi: 'Noto Serif Gurmukhi', serif;
+  --font-script-bengali: 'Noto Serif Bengali', serif;
+  --font-script-gujarati: 'Noto Serif Gujarati', serif;
+  --font-script-tamil: 'Noto Serif Tamil', serif;
+  --font-script-telugu: 'Noto Serif Telugu', serif;
+  --font-script-kannada: 'Noto Serif Kannada', serif;
+  --font-script-malayalam: 'Noto Serif Malayalam', serif;
+  --font-script-arabic: 'Noto Naskh Arabic', serif;
+  --font-script-hebrew: 'Noto Serif Hebrew', serif;
+  --font-script-georgian: 'Noto Serif Georgian', serif;
+  --font-script-armenian: 'Noto Serif Armenian', serif;
+  --font-script-japanese: 'Noto Serif JP', serif;
+  --font-script-korean: 'Noto Serif KR', serif;
+  --font-script-chinese: 'Noto Serif SC', serif;
+
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-lg: 4px;
+}
+
+:root {
+  color-scheme: light;
+  --background: #f5ecdc;
+  --card: #fbf6ec;
+  --foreground: #2b2724;
+  --muted-foreground: #6e645a;
+  --accent: #b8394a;
+  --accent-soft: #ecc4c4;
+  --border: #d9cbb4;
+  --radius: 4px;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  ::selection {
+    background: var(--accent-soft);
+  }
+}
+
+.paper {
+  background-color: var(--background);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.27 0 0 0 0 0.18 0 0 0 0.09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse at 50% 0%, rgba(255, 252, 245, 0.7), transparent 60%);
+}
+
+.paper-card {
+  background-color: var(--card);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.4 0 0 0 0 0.3 0 0 0 0 0.2 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.love-note {
+  transform: rotate(var(--tilt, 0deg));
+  box-shadow:
+    0 1px 1px rgba(60, 40, 20, 0.06),
+    0 4px 10px -6px rgba(60, 40, 20, 0.18);
+  transition:
+    transform 380ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 380ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.love-note:hover,
+.love-note:focus-visible {
+  transform: translateY(-6px) rotate(calc(var(--tilt, 0deg) * -1.2 + var(--jitter, 0deg)));
+  box-shadow:
+    0 2px 2px rgba(60, 40, 20, 0.06),
+    0 18px 28px -14px rgba(60, 40, 20, 0.35);
+}
+
+.love-note .peek-heart {
+  opacity: 0;
+  transform: translateY(4px) scale(0.6);
+  transition:
+    opacity 300ms ease,
+    transform 300ms cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+
+.love-note:hover .peek-heart,
+.love-note:focus-visible .peek-heart {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+dialog.postcard-dialog {
+  background: transparent;
+  max-width: none;
+  max-height: none;
+  padding: 0;
+  border: 0;
+  overflow: visible;
+}
+
+dialog.postcard-dialog::backdrop {
+  background: rgba(43, 39, 36, 0.45);
+  backdrop-filter: blur(3px);
+  animation: fade-in 280ms ease both;
+}
+
+dialog.postcard-dialog[data-closing='true']::backdrop {
+  animation: fade-out 240ms ease both;
+}
+
+.postcard-enter {
+  animation: postcard-in 460ms cubic-bezier(0.2, 0.9, 0.25, 1.1) both;
+}
+
+dialog[data-closing='true'] .postcard-enter {
+  animation: postcard-out 240ms ease-in both;
+}
+
+@keyframes postcard-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px) rotate(-4deg) scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(-1deg) scale(1);
+  }
+}
+
+@keyframes postcard-out {
+  to {
+    opacity: 0;
+    transform: translateY(16px) rotate(2deg) scale(0.9);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes float-heart {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.6) rotate(0deg);
+  }
+  15% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--drift, 0px), -220px) scale(1.1) rotate(var(--spin, 12deg));
+  }
+}
+
+.float-heart {
+  animation: float-heart var(--dur, 3.2s) ease-out var(--delay, 0s) infinite;
+}
+
+@keyframes heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  15% {
+    transform: scale(1.18);
+  }
+  30% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.12);
+  }
+}
+
+.heartbeat {
+  animation: heartbeat 1.8s ease-in-out infinite;
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+.rise-in {
+  animation: rise-in 700ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* ---------- Journey: intro gate ---------- */
+
+.gate {
+  transition: opacity 600ms ease, transform 600ms ease;
+}
+.gate[data-leaving='true'] {
+  opacity: 0;
+  transform: translateY(-12px);
+  pointer-events: none;
+}
+
+.site-reveal {
+  z-index: 1;
+  transition: opacity 900ms ease 150ms;
+}
+.site-reveal[data-entered='false'] {
+  opacity: 0;
+}
+
+.gate-btn {
+  min-height: 3rem;
+  transition:
+    transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    background-color 200ms ease,
+    color 200ms ease;
+}
+.gate-btn:hover {
+  transform: translateY(-2px);
+}
+.gate-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+.no-btn {
+  transition: transform 420ms cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+
+.terms-in {
+  animation: terms-in 620ms cubic-bezier(0.2, 0.9, 0.25, 1.05) both;
+}
+@keyframes terms-in {
+  from {
+    opacity: 0;
+    transform: translateY(40px) rotate(-5deg) scale(0.94);
+  }
+}
+
+/* ---------- Background moods ---------- */
+
+.quiet-veil {
+  z-index: 0;
+  background: radial-gradient(ellipse at 50% 40%, rgba(251, 246, 236, 0.85), rgba(245, 236, 220, 0.6));
+  opacity: 0;
+  transition: opacity 2400ms ease;
+}
+html[data-mood='quiet'] .quiet-veil {
+  opacity: 0.55;
+}
+html[data-mood='soft'] .quiet-veil {
+  opacity: 0.9;
+}
+
+.fade-when-quiet {
+  transition:
+    opacity 1800ms ease,
+    filter 1800ms ease;
+}
+html[data-mood='quiet'] .fade-when-quiet,
+html[data-mood='soft'] .fade-when-quiet {
+  opacity: 0.12;
+  filter: saturate(0.4);
+}
+
+html[data-mood='quiet'] .hover-quip,
+html[data-mood='soft'] .hover-quip,
+html[data-calm] .hover-quip,
+html[data-calm] .peek-heart {
+  display: none;
+}
+html[data-calm] .heartbeat {
+  animation: none;
+}
+
+/* ---------- Hero button ---------- */
+
+.hero-cta {
+  box-shadow:
+    0 1px 1px rgba(60, 40, 20, 0.06),
+    0 4px 10px -6px rgba(60, 40, 20, 0.2);
+  transition:
+    transform 320ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 320ms ease;
+}
+.hero-cta:hover,
+.hero-cta:focus-visible {
+  transform: translateY(-3px) rotate(-1.5deg);
+  box-shadow:
+    0 2px 2px rgba(60, 40, 20, 0.06),
+    0 16px 24px -12px rgba(60, 40, 20, 0.35);
+}
+.cta-heart {
+  opacity: 0;
+  transform: scale(0.4) rotate(-20deg);
+  transition:
+    opacity 260ms ease,
+    transform 360ms cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+.hero-cta:hover .cta-heart,
+.hero-cta:focus-visible .cta-heart {
+  opacity: 1;
+  transform: scale(1) rotate(12deg);
+}
+
+/* ---------- Cards ---------- */
+
+.hover-quip {
+  position: absolute;
+  top: -0.9rem;
+  left: 0.75rem;
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  white-space: nowrap;
+  padding: 0 0.5rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  color: var(--accent);
+  background: var(--card);
+  border: 1px dashed color-mix(in oklab, var(--accent) 45%, transparent);
+  border-radius: 999px;
+  opacity: 0;
+  transform: translateY(6px) rotate(-3deg);
+  transition:
+    opacity 220ms ease,
+    transform 300ms cubic-bezier(0.3, 1.5, 0.5, 1);
+  pointer-events: none;
+}
+.love-note:hover .hover-quip,
+.love-note:focus-visible .hover-quip {
+  opacity: 1;
+  transform: translateY(0) rotate(-3deg);
+}
+.hover-quip:empty {
+  display: none;
+}
+
+.read-stamp {
+  animation: stamp-in 420ms cubic-bezier(0.3, 1.6, 0.5, 1) both;
+}
+@keyframes stamp-in {
+  from {
+    opacity: 0;
+    transform: scale(1.8) rotate(-20deg);
+  }
+}
+
+@media (max-width: 640px) {
+  .love-note {
+    transform: rotate(calc(var(--tilt, 0deg) * 0.45));
+  }
+  .love-note:hover,
+  .love-note:focus-visible {
+    transform: translateY(-4px) rotate(calc(var(--tilt, 0deg) * -0.5));
+  }
+}
+
+.milestone-pop {
+  animation: milestone 3600ms ease both;
+}
+@keyframes milestone {
+  0% {
+    opacity: 0;
+    transform: translateY(-6px) rotate(-2deg) scale(0.9);
+  }
+  10%,
+  85% {
+    opacity: 1;
+    transform: translateY(0) rotate(-2deg) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(4px) rotate(-2deg);
+  }
+}
+
+/* ---------- Postcard ---------- */
+
+.postcard-shadow {
+  box-shadow:
+    0 2px 3px rgba(60, 40, 20, 0.08),
+    0 30px 60px -20px rgba(40, 25, 10, 0.45);
+}
+
+.postcard-enter {
+  transform-origin: 50% 0%;
+  animation: postcard-unfold 720ms cubic-bezier(0.2, 0.9, 0.25, 1.05) both;
+}
+@keyframes postcard-unfold {
+  0% {
+    opacity: 0;
+    transform: perspective(1200px) translateY(30px) rotateX(-62deg) rotate(-4deg) scale(0.88);
+  }
+  55% {
+    opacity: 1;
+    transform: perspective(1200px) translateY(-4px) rotateX(8deg) rotate(-0.5deg) scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(1200px) translateY(0) rotateX(0) rotate(-1deg) scale(1);
+  }
+}
+
+.postcard-float-heart {
+  animation: tiny-float 2600ms ease-out 500ms both;
+}
+@keyframes tiny-float {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.5);
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(10px, -60px) scale(1.1) rotate(14deg);
+  }
+}
+
+.postcard-final {
+  animation: final-in 1400ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+dialog[data-closing='true'] .postcard-final {
+  animation: postcard-out 500ms ease-in both;
+}
+@keyframes final-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(-0.4deg);
+  }
+}
+dialog.postcard-dialog[data-final='true']::backdrop {
+  background: rgba(43, 39, 36, 0.62);
+  animation-duration: 900ms;
+}
+
+.slow-line {
+  animation: slow-line 1400ms cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0s) both;
+}
+@keyframes slow-line {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+    filter: blur(2px);
+  }
+}
+
+/* ---------- Heart game ---------- */
+
+dialog.game-dialog {
+  border: 0;
+  color: var(--foreground);
+}
+dialog.game-dialog::backdrop {
+  background: var(--background);
+}
+.catch-heart {
+  transform: rotate(var(--rot, 0deg));
+  animation: bob 2.4s ease-in-out infinite, rise-in 500ms ease both;
+  transition: opacity 300ms ease;
+}
+.catch-heart:hover {
+  scale: 1.15;
+}
+.catch-heart[data-caught='true'] {
+  opacity: 0.18;
+  animation: none;
+  scale: 0.8;
+}
+@keyframes bob {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -10px;
+  }
+}
+
+/* ---------- One message ---------- */
+
+.seq-reveal .seq {
+  opacity: 0;
+  transform: translateY(14px);
+}
+.seq-reveal[data-visible='true'] .seq {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 1200ms ease var(--d, 0s),
+    transform 1200ms cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0s);
+}
+
+/* ---------- Ending ---------- */
+
+.slow-rise {
+  animation: slow-line 1600ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.burst-heart {
+  animation: burst 1200ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@keyframes burst {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.4);
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--bx), var(--by)) scale(1);
+  }
+}
+
+.yes-heart {
+  animation: yes-heart 1600ms cubic-bezier(0.3, 1.4, 0.5, 1) both;
+}
+@keyframes yes-heart {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.keepsake-shadow {
+  box-shadow:
+    0 2px 3px rgba(60, 40, 20, 0.08),
+    0 40px 70px -30px rgba(40, 25, 10, 0.5);
+}
+.keepsake-in {
+  animation: keepsake-in 1800ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@keyframes keepsake-in {
+  0% {
+    opacity: 0;
+    transform: translateY(90px) rotate(-5deg);
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(-1.2deg);
+  }
+}
+
+.ink-reveal {
+  animation: ink 1800ms ease-out var(--d, 0s) both;
+}
+@keyframes ink {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.drift-heart {
+  animation: drift 7s ease-in-out infinite;
+}
+@keyframes drift {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(0) rotate(-8deg);
+  }
+  50% {
+    opacity: 0.9;
+    transform: translateY(-14px) rotate(8deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .love-note,
+  .love-note .peek-heart,
+  .hero-cta,
+  .cta-heart,
+  .hover-quip,
+  .no-btn,
+  .gate,
+  .site-reveal {
+    transition: none;
+  }
+  .love-note,
+  .love-note:hover,
+  .love-note:focus-visible,
+  .hero-cta:hover,
+  .hero-cta:focus-visible,
+  .no-btn {
+    transform: none !important;
+  }
+  .float-heart,
+  .drift-heart,
+  .postcard-float-heart,
+  .burst-heart {
+    display: none;
+  }
+  .heartbeat,
+  .postcard-enter,
+  .postcard-final,
+  .rise-in,
+  .terms-in,
+  .read-stamp,
+  .slow-line,
+  .slow-rise,
+  .catch-heart,
+  .yes-heart,
+  .keepsake-in,
+  .ink-reveal,
+  .milestone-pop,
+  dialog.postcard-dialog::backdrop {
+    animation: none;
+  }
+  .milestone-pop {
+    transform: rotate(-2deg);
+  }
+  .seq-reveal .seq,
+  .seq-reveal[data-visible='true'] .seq {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .quiet-veil,
+  .fade-when-quiet {
+    transition: none;
+  }
+}
+
+/* Two torn pieces of the same postcard; reuse the original paper and ink. */
+.together-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  margin-top: 1rem;
+  perspective: 1100px;
+  isolation: isolate;
+  transition: transform 650ms ease-in, opacity 650ms ease-in;
+}
+.together-stage[data-opening='true'] {
+  transform: perspective(1100px) rotateY(-90deg) scale(.96);
+  opacity: 0;
+  pointer-events: none;
+}
+.together-outline,
+.together-mend,
+.together-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.together-outline { transition: opacity 600ms ease; }
+.together-stage[data-joined='true'] .together-outline { opacity: 0; }
+.together-piece-shadow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  filter: drop-shadow(0 10px 8px rgba(60, 40, 20, .18));
+}
+.together-piece-shadow[data-dragging='true'] { z-index: 3; }
+.together-piece {
+  pointer-events: auto;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--foreground);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transform: perspective(1100px) translate(var(--piece-x), var(--piece-y)) rotate(var(--piece-angle)) rotateY(var(--piece-depth));
+  transition: transform 600ms cubic-bezier(.2, .8, .2, 1);
+}
+.together-piece-mine {
+  --piece-angle: -5deg;
+  --piece-depth: 9deg;
+  clip-path: polygon(12.5% 8%, 50% 8%, 47% 19.6%, 52.5% 29%, 47.25% 38%, 52% 47.4%, 47.5% 56.6%, 52.5% 66%, 47.5% 75%, 51.75% 83.8%, 50% 92%, 12.5% 92%);
+}
+.together-piece-yours {
+  --piece-angle: 5deg;
+  --piece-depth: -9deg;
+  clip-path: polygon(50% 8%, 87.5% 8%, 87.5% 92%, 50% 92%, 51.75% 83.8%, 47.5% 75%, 52.5% 66%, 47.5% 56.6%, 52% 47.4%, 47.25% 38%, 52.5% 29%, 47% 19.6%);
+}
+.together-piece[data-dragging='true'] {
+  z-index: 3;
+  cursor: grabbing;
+  transition: none;
+  --piece-angle: 0deg;
+  --piece-depth: 0deg;
+}
+.together-piece[data-placed='true'] {
+  --piece-angle: 0deg;
+  --piece-depth: 0deg;
+  cursor: default;
+}
+.together-piece:focus-visible .together-art rect:first-of-type {
+  fill: var(--accent-soft);
+}
+.together-piece:focus-visible .together-art > path {
+  stroke: var(--accent);
+  stroke-width: 4px;
+  stroke-opacity: 1;
+}
+.together-art-hand { font-family: var(--font-caveat), 'Segoe Print', cursive; }
+.together-art-serif { font-family: var(--font-cormorant), Georgia, serif; }
+.together-mend {
+  z-index: 4;
+  animation: mend-in 900ms ease 350ms both;
+}
+.together-after { position: relative; margin-top: -.5rem; }
+.together-letter {
+  width: 100%;
+  scroll-margin-top: 2rem;
+  animation: together-turn 1000ms cubic-bezier(.2, .7, .2, 1) both;
+}
+@keyframes mend-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes together-turn {
+  from { opacity: 0; transform: perspective(1100px) rotateY(70deg); }
+  to { opacity: 1; transform: perspective(1100px) rotateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .together-piece, .together-stage, .together-outline { transition: none; }
+  .together-mend, .together-letter { animation: none; }
+}
